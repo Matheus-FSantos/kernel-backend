@@ -1,4 +1,4 @@
-package org.bitbucket.Kernel.KNEurekaServer;
+package io.github.MatheusFSantos.KNEurekaServer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
