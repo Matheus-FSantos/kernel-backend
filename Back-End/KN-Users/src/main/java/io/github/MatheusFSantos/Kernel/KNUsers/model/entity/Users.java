@@ -1,11 +1,15 @@
 package io.github.MatheusFSantos.Kernel.KNUsers.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.enumeration.Roles;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,13 +37,15 @@ public class Users implements Serializable {
     @Column(nullable=false, length=35)
     private String password;
 
-    //roles
-
     @Column(length=30)
     private String location;
 
     @Column(length=160)
     private String biography;
+
+    @Column(nullable=false)
+    @Enumerated(EnumType.STRING)
+    private Roles roles;
 
     @Column(nullable=false, updatable=false)
     @JsonFormat(pattern="dd/MM/yyyy HH:mm:s")
@@ -51,14 +57,15 @@ public class Users implements Serializable {
 
     public Users() { }
 
-    public Users(UUID id, String name, String nickname, String email, String password, String location, String biography) {
+    public Users(UUID id, String name, String nickname, String email, String password, String location, String biography, Roles roles) {
         this.id = id;
         this.name = name;
-        this.nickname = nickname;
+        this.nickname = this.updateNicknameInstance(nickname);
         this.email = email;
         this.password = password;
         this.location = location;
         this.biography = biography;
+        this.roles = roles;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
@@ -73,6 +80,7 @@ public class Users implements Serializable {
                 ", password='" + password + '\'' +
                 ", location='" + location + '\'' +
                 ", biography='" + biography + '\'' +
+                ", roles=" + roles +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
@@ -117,6 +125,15 @@ public class Users implements Serializable {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public String updateNicknameInstance(String nickname) {
+        StringBuilder readyToSaveNickname = new StringBuilder();
+
+        if(!nickname.substring(0, 1).equals("@"))
+            return readyToSaveNickname.append("@").append(nickname).toString();
+
+        return readyToSaveNickname.append(nickname).toString();
     }
 
     public void updateNickname(String nickname) {
@@ -173,6 +190,10 @@ public class Users implements Serializable {
 
     private void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public Roles getRoles() {
+        return this.roles;
     }
 
     public LocalDateTime getCreatedAt() {
