@@ -1,8 +1,7 @@
-package io.github.MatheusFSantos.Kernel.KNUsers;
+package io.github.MatheusFSantos.Kernel.KNUsers.model.entity;
 
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.Users;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.enumeration.Roles;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.*;
 
 @SpringBootTest
-class KnUsersApplicationTests {
+class UserEntityTests {
 
 	@Test
 	void rolesTest() {
