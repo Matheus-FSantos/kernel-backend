@@ -1,5 +1,6 @@
 package io.github.MatheusFSantos.Kernel.KNUsers.controller;
 
+import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.Users;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.UsersException;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.service.UsersService;
@@ -27,9 +28,8 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save() {
-        //complete save method
-        return ResponseEntity.ok().body("save");
+    public ResponseEntity<?> save(@RequestBody UsersDTO usersDTO) {
+        return ResponseEntity.ok().body(usersDTO);
     }
 
     @PutMapping("/{id}")
