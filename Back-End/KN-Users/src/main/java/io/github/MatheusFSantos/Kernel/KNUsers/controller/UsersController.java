@@ -1,22 +1,29 @@
 package io.github.MatheusFSantos.Kernel.KNUsers.controller;
 
+import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.Users;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.UsersException;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.service.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
 public class UsersController {
 
+    @Autowired
+    private UsersService usersService;
+
     @GetMapping
-    public ResponseEntity<?> findAll() {
-        //complete find all method
-        return ResponseEntity.ok().body("findAll");
+    public ResponseEntity<List<Users>> findAll() throws UsersException {
+        return ResponseEntity.ok().body(this.usersService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        //complete find by id method
-        return ResponseEntity.ok().body("findById");
+    public ResponseEntity<?> findById(@PathVariable UUID id) throws UsersException {
+        return ResponseEntity.ok().body(this.usersService.findById(id));
     }
 
     @PostMapping
@@ -32,9 +39,9 @@ public class UsersController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        //complete delete method
-        return ResponseEntity.ok().body("delete");
+    public ResponseEntity<?> delete(@PathVariable UUID id) throws UsersException {
+        this.usersService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
