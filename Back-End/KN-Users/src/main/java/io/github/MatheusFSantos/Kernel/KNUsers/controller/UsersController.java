@@ -36,7 +36,7 @@ public class UsersController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id) {
-        //complete update method
+        //call service
         return ResponseEntity.ok().body("update");
     }
 
