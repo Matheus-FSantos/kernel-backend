@@ -22,8 +22,7 @@ public class Users implements Serializable {
 
     @Id
     @Column(updatable=false)
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private UUID id;
+    private String id;
 
     @Column(nullable=false, length=60)
     private String name;
@@ -57,7 +56,7 @@ public class Users implements Serializable {
 
     public Users() { }
 
-    public Users(UUID id, String name, String nickname, String email, String password, String location, String biography, Roles roles) {
+    public Users(String id, String name, String nickname, String email, String password, String location, String biography, Roles roles) {
         this.id = id;
         this.name = name;
         this.nickname = this.updateNicknameInstance(nickname);
@@ -99,15 +98,15 @@ public class Users implements Serializable {
         return Objects.hash(id);
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void updateId(UUID id) {
+    public void updateId(String id) {
         this.setId(id);
     }
 
-    private void setId(UUID id) {
+    private void setId(String id) {
         this.id = id;
     }
 
