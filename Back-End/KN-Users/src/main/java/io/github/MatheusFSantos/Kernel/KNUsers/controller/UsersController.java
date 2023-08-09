@@ -24,7 +24,7 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Users> findById(@PathVariable UUID id) throws UsersException {
+    public ResponseEntity<Users> findById(@PathVariable String id) throws UsersException {
         return ResponseEntity.ok().body(this.usersService.findById(id));
     }
 
@@ -41,7 +41,7 @@ public class UsersController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) throws UsersException {
+    public ResponseEntity<?> delete(@PathVariable String id) throws UsersException {
         this.usersService.delete(id);
         return ResponseEntity.noContent().build();
     }

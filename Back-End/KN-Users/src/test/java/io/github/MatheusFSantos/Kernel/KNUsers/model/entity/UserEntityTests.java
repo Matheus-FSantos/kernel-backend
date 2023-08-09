@@ -13,7 +13,7 @@ class UserEntityTests {
 
 	@Test
 	void rolesTest() {
-		Users user = new Users(UUID.randomUUID(), "Matheus Ferreira Santos", "@matheus_jjson", "matheus.fs.contato@gmail.com", "d94ed3838", "São Paulo/SP", "Back-end developer júnior", Roles.ADMIN);
+		Users user = new Users(UUID.randomUUID().toString(), "Matheus Ferreira Santos", "@matheus_jjson", "matheus.fs.contato@gmail.com", "d94ed3838", "São Paulo/SP", "Back-end developer júnior", Roles.ADMIN);
 
 		System.out.println("Debug output :>> " + user);
 		Assertions.assertNotNull(user.getRoles());
@@ -21,8 +21,8 @@ class UserEntityTests {
 
 	@Test
 	void updateNicknameInstanceMethodTest() {
-		Users user = new Users(UUID.randomUUID(), "Matheus Ferreira Santos", "@matheus_jjson", "matheus.fs.contato@gmail.com", "d94ed3838", "São Paulo/SP", "Back-end developer júnior", Roles.ADMIN);
-		Users user2 = new Users(UUID.randomUUID(), "Matheus Ferreira Santos", "matheus_jjson", "matheus.fs.contato@gmail.com", "d94ed3838", "São Paulo/SP", "Back-end developer júnior", Roles.ADMIN);
+		Users user = new Users(UUID.randomUUID().toString(), "Matheus Ferreira Santos", "@matheus_jjson", "matheus.fs.contato@gmail.com", "d94ed3838", "São Paulo/SP", "Back-end developer júnior", Roles.ADMIN);
+		Users user2 = new Users(UUID.randomUUID().toString(), "Matheus Ferreira Santos", "matheus_jjson", "matheus.fs.contato@gmail.com", "d94ed3838", "São Paulo/SP", "Back-end developer júnior", Roles.ADMIN);
 
 		System.out.println("Debug output :>> User 1 nickname: " + user.getNickname() + ", User 2 nickname: " + user2.getNickname());
 		Assertions.assertEquals(user.getNickname(), user2.getNickname());
