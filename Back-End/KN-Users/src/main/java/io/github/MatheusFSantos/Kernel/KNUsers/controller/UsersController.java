@@ -41,7 +41,7 @@ public class UsersController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) throws UsersException {
+    public ResponseEntity<Void> delete(@PathVariable String id) throws UsersException {
         this.usersService.delete(id);
         return ResponseEntity.noContent().build();
     }
