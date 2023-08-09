@@ -29,9 +29,9 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<UsersDTO> save(@RequestBody UsersDTO usersDTO) throws UsersException {
+    public ResponseEntity<Void> save(@RequestBody UsersDTO usersDTO) throws UsersException {
         this.usersService.save(usersDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usersDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
