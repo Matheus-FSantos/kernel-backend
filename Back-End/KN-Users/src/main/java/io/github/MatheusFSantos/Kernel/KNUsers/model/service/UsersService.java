@@ -4,6 +4,7 @@ import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.Authorize;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.BusinessCritical;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.InternalUseOnly;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.ReadOnly;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersBackupDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.Users;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.enumeration.Roles;
@@ -28,6 +29,9 @@ public class UsersService {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private UsersBackupService usersBackupService;
+
     @ReadOnly
     public List<Users> findAll() throws UsersException {
         List<Users> usersList = this.usersRepository.findAll();
@@ -39,11 +43,12 @@ public class UsersService {
     }
 
     @ReadOnly
-    @Authorize
+    @Authorize(required=true)
     public Users findById(String id) throws UsersException {
         return this.usersRepository.findById(id).orElseThrow(() -> new UsersNotFound("User not found in database!", "The method was invoked to list a user (method find by id), but the user is not present in the database of this service", HttpStatus.SC_NOT_FOUND));
     }
 
+    @Authorize(required=true)
     public void save(UsersDTO usersDTO) throws UsersException {
         UsersValidations.validation(usersDTO);
         usersDTO.setNickname(NicknameConverter.convert(usersDTO.getNickname()));
@@ -52,10 +57,12 @@ public class UsersService {
             throw new UserAlreadyExists("User already exists!", "The method was invoked to save one user (save method), however this user already exists.", HttpStatus.SC_CONFLICT);
 
         Users user = new Users(UUID.randomUUID().toString(), usersDTO.getName(), usersDTO.getNickname(), usersDTO.getEmail(), usersDTO.getPassword(), usersDTO.getLocation(), usersDTO.getBiography(), Roles.BASIC);
+
+        this.usersBackupService.save(new UsersBackupDTO(user));
         this.usersRepository.save(user);
     }
 
-    @Authorize
+    @Authorize(required=true)
     public void update(String id, UsersDTO usersDTO) throws UsersException {
         UUIDValidation.isValidUUID(id);
         UsersValidations.validation(usersDTO);
@@ -69,7 +76,7 @@ public class UsersService {
         this.usersRepository.save(updatedUser);
     }
 
-    @Authorize
+    @Authorize(required=true)
     public void delete(String id) throws UsersException {
         if(this.findById(id) != null)
             this.usersRepository.deleteById(id);
