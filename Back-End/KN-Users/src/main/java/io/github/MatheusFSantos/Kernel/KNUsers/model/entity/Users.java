@@ -47,11 +47,11 @@ public class Users implements Serializable {
     private Roles roles;
 
     @Column(nullable=false, updatable=false)
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:s")
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
     private LocalDateTime createdAt;
 
     @Column(nullable=false)
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:s")
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
     private LocalDateTime updatedAt;
 
     public Users() { }
