@@ -59,13 +59,26 @@ public class Users implements Serializable {
     public Users(String id, String name, String nickname, String email, String password, String location, String biography, Roles roles) {
         this.id = id;
         this.name = name;
-        this.nickname = this.updateNicknameInstance(nickname);
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.location = location;
         this.biography = biography;
         this.roles = roles;
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public Users(String id, String name, String nickname, String email, String password, String location, String biography, Roles roles, LocalDateTime createdAt) {
+        this.id = id;
+        this.name = name;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.location = location;
+        this.biography = biography;
+        this.roles = roles;
+        this.createdAt = createdAt;
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -124,15 +137,6 @@ public class Users implements Serializable {
 
     public String getNickname() {
         return nickname;
-    }
-
-    public String updateNicknameInstance(String nickname) {
-        StringBuilder readyToSaveNickname = new StringBuilder();
-
-        if(!nickname.substring(0, 1).equals("@"))
-            return readyToSaveNickname.append("@").append(nickname).toString();
-
-        return readyToSaveNickname.append(nickname).toString();
     }
 
     public void updateNickname(String nickname) {

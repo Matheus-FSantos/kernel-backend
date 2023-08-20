@@ -29,19 +29,19 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<UsersDTO> save(@RequestBody UsersDTO usersDTO) throws UsersException {
+    public ResponseEntity<Void> save(@RequestBody UsersDTO usersDTO) throws UsersException {
         this.usersService.save(usersDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usersDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id) {
-        //complete update method
-        return ResponseEntity.ok().body("update");
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody UsersDTO usersDTO) throws UsersException {
+        this.usersService.update(id, usersDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) throws UsersException {
+    public ResponseEntity<Void> delete(@PathVariable String id) throws UsersException {
         this.usersService.delete(id);
         return ResponseEntity.noContent().build();
     }
