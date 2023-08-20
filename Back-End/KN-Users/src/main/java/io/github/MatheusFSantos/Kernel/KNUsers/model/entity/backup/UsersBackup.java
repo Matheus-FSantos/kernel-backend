@@ -1,4 +1,4 @@
-package io.github.MatheusFSantos.Kernel.KNUsers.model.entity;
+package io.github.MatheusFSantos.Kernel.KNUsers.model.entity.backup;
 
 import org.springframework.stereotype.Component;
 
