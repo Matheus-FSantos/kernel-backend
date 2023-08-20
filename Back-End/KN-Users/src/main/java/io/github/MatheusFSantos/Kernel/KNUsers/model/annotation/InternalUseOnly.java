@@ -1,4 +1,4 @@
-package io.github.MatheusFSantos.Kernel.KNUsers.model.annotations;
+package io.github.MatheusFSantos.Kernel.KNUsers.model.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

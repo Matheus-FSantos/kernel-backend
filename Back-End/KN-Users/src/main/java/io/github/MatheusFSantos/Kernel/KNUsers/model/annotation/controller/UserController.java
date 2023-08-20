@@ -1,4 +1,4 @@
-package io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.controller;
+package io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

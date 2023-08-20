@@ -1,9 +1,9 @@
 package io.github.MatheusFSantos.Kernel.KNUsers.model.service;
 
-import io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.Authorize;
-import io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.BusinessCritical;
-import io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.InternalUseOnly;
-import io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.ReadOnly;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.Authorize;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.BusinessCritical;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.InternalUseOnly;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.ReadOnly;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.Users;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.enumeration.Roles;
