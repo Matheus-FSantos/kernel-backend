@@ -1,6 +1,8 @@
 package io.github.MatheusFSantos.Kernel.KNUsers.model.validation;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import io.github.MatheusFSantos.Kernel.KNUsers.model.util.validation.UsersValidations;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
