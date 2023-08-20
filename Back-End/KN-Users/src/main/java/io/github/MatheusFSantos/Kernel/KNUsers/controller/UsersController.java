@@ -35,9 +35,9 @@ public class UsersController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id) {
-        //call service
-        return ResponseEntity.ok().body("update");
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody UsersDTO usersDTO) throws UsersException {
+        this.usersService.update(id, usersDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{id}")
