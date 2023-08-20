@@ -1,5 +1,6 @@
 package io.github.MatheusFSantos.Kernel.KNUsers.controller;
 
+import io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.controller.UserController;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.Users;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.UsersException;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/api/users")
+
+@UserController
 public class UsersController {
 
     @Autowired

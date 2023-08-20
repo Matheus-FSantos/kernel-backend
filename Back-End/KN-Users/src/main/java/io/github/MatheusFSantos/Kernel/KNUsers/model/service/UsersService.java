@@ -1,5 +1,9 @@
 package io.github.MatheusFSantos.Kernel.KNUsers.model.service;
 
+import io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.Authorize;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.BusinessCritical;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.InternalUseOnly;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.annotations.ReadOnly;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.Users;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.enumeration.Roles;
@@ -18,11 +22,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@BusinessCritical
 public class UsersService {
 
     @Autowired
     private UsersRepository usersRepository;
 
+    @ReadOnly
     public List<Users> findAll() throws UsersException {
         List<Users> usersList = this.usersRepository.findAll();
 
@@ -32,6 +38,8 @@ public class UsersService {
         throw new UsersNotFound("Users not found in database!", "The method was invoked to list all users (find all method), however the database is empty", HttpStatus.SC_NOT_FOUND);
     }
 
+    @ReadOnly
+    @Authorize
     public Users findById(String id) throws UsersException {
         return this.usersRepository.findById(id).orElseThrow(() -> new UsersNotFound("User not found in database!", "The method was invoked to list a user (method find by id), but the user is not present in the database of this service", HttpStatus.SC_NOT_FOUND));
     }
@@ -47,6 +55,7 @@ public class UsersService {
         this.usersRepository.save(user);
     }
 
+    @Authorize
     public void update(String id, UsersDTO usersDTO) throws UsersException {
         UUIDValidation.isValidUUID(id);
         UsersValidations.validation(usersDTO);
@@ -60,11 +69,13 @@ public class UsersService {
         this.usersRepository.save(updatedUser);
     }
 
+    @Authorize
     public void delete(String id) throws UsersException {
         if(this.findById(id) != null)
             this.usersRepository.deleteById(id);
     }
 
+    @InternalUseOnly
     private void updateVerification(Users oldUser, UsersDTO updatedUser) throws UsersException {
         if(!updatedUser.getNickname().equals(oldUser.getNickname()))
             if(this.usersRepository.findByNickname(updatedUser.getNickname()).isPresent()) /* There is another user with the nickname he entered */
