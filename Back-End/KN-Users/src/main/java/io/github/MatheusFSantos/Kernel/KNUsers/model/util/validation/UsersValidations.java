@@ -1,4 +1,4 @@
-package io.github.MatheusFSantos.Kernel.KNUsers.model.validation;
+package io.github.MatheusFSantos.Kernel.KNUsers.model.util.validation;
 
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.UsersException;
