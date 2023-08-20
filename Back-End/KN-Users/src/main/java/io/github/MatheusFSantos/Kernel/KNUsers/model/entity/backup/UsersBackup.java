@@ -2,10 +2,7 @@ package io.github.MatheusFSantos.Kernel.KNUsers.model.entity.backup;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -20,6 +17,7 @@ public class UsersBackup implements Serializable {
     @Id
     private String id;
 
+    @Lob
     @Column(nullable=false)
     private String encryptedData;
 
@@ -28,10 +26,10 @@ public class UsersBackup implements Serializable {
 
     public UsersBackup() { }
 
-    public UsersBackup(String id, String encryptedData) {
+    public UsersBackup(String id, String encryptedData, LocalDateTime createdAt) {
         this.id = id;
         this.encryptedData = encryptedData;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = createdAt;
     }
 
     @Override
