@@ -7,7 +7,9 @@ import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.UsersException;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.specific.UserAlreadyExists;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.specific.UsersNotFound;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.repository.UsersRepository;
-import io.github.MatheusFSantos.Kernel.KNUsers.model.validation.UsersValidations;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.util.converter.NicknameConverter;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.util.validation.UUIDValidation;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.util.validation.UsersValidations;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,21 +38,41 @@ public class UsersService {
 
     public void save(UsersDTO usersDTO) throws UsersException {
         UsersValidations.validation(usersDTO);
+        usersDTO.setNickname(NicknameConverter.convert(usersDTO.getNickname()));
 
         if(this.usersRepository.findByNickname(usersDTO.getNickname()).isPresent() || this.usersRepository.findByEmail(usersDTO.getEmail()).isPresent())
             throw new UserAlreadyExists("User already exists!", "The method was invoked to save one user (save method), however this user already exists.", HttpStatus.SC_CONFLICT);
 
-        Users user = new Users(UUID.randomUUID().toString(), usersDTO.getName(), usersDTO.getNickname(), usersDTO.getPassword(), usersDTO.getLocation(), usersDTO.getLocation(), usersDTO.getBiography(), Roles.BASIC);
+        Users user = new Users(UUID.randomUUID().toString(), usersDTO.getName(), usersDTO.getNickname(), usersDTO.getEmail(), usersDTO.getPassword(), usersDTO.getLocation(), usersDTO.getBiography(), Roles.BASIC);
         this.usersRepository.save(user);
     }
 
-    public void update() {
+    public void update(String id, UsersDTO usersDTO) throws UsersException {
+        UUIDValidation.isValidUUID(id);
+        UsersValidations.validation(usersDTO);
+        usersDTO.setNickname(NicknameConverter.convert(usersDTO.getNickname()));
 
+        Users oldUser = this.findById(id); /* automatically checks if user exists */
+        this.updateVerification(oldUser, usersDTO);
+
+        /* Parse DTO to entity */
+        Users updatedUser = new Users(id, usersDTO.getName(), usersDTO.getNickname(), usersDTO.getEmail(), usersDTO.getPassword(), usersDTO.getLocation(), usersDTO.getBiography(), oldUser.getRoles(), oldUser.getCreatedAt());
+        this.usersRepository.save(updatedUser);
     }
 
     public void delete(String id) throws UsersException {
         if(this.findById(id) != null)
             this.usersRepository.deleteById(id);
+    }
+
+    private void updateVerification(Users oldUser, UsersDTO updatedUser) throws UsersException {
+        if(!updatedUser.getNickname().equals(oldUser.getNickname()))
+            if(this.usersRepository.findByNickname(updatedUser.getNickname()).isPresent()) /* There is another user with the nickname he entered */
+                throw new UserAlreadyExists("User already exists!", "The method was invoked to update one user (update method), however this user already exists.", HttpStatus.SC_CONFLICT);
+
+        if(!updatedUser.getEmail().equals(oldUser.getEmail()))
+            if(this.usersRepository.findByEmail(updatedUser.getEmail()).isPresent())/* There is another user with the e-mail he entered */
+                throw new UserAlreadyExists("User already exists!", "The method was invoked to update one user (update method), however this user already exists.", HttpStatus.SC_CONFLICT);
     }
 
 }
