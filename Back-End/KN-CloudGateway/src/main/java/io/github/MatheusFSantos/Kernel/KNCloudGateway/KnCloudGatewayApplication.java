@@ -17,10 +17,14 @@ public class KnCloudGatewayApplication {
 
 	@Bean
 	public RouteLocator router(RouteLocatorBuilder routeLocatorBuilder) {
-		return
-				routeLocatorBuilder
-					.routes().route(r -> r.path("/api/users/**").uri("lb://kn-users"))
-				.build();
+		return routeLocatorBuilder
+					.routes()
+					.route(r -> r.path("/api/users/**")
+						.and()
+						.path("/api/backup/users/**")
+						.uri("lb://kn-users")
+					)
+					.build();
 	}
 
 }
