@@ -1,6 +1,7 @@
 package io.github.MatheusFSantos.Kernel.KNUsers.model.util.validation;
 
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersDTO;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersLoginDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.UsersException;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.specific.UserInvalidFields;
 import org.apache.http.HttpStatus;
@@ -19,6 +20,16 @@ public class UsersValidations {
         UsersValidations.regexPassword(exceptionMessages, usersDTO.getPassword());
         UsersValidations.locationValidation(exceptionMessages, usersDTO);
         UsersValidations.biographyValidation(exceptionMessages, usersDTO);
+
+        if(!exceptionMessages.isEmpty())
+            throw new UserInvalidFields(exceptionMessages, "When filling out the form, the user entered some invalid data, all of which are listed above.", HttpStatus.SC_CONFLICT);
+    }
+
+    public static void loginValidation(UsersLoginDTO usersLoginDTO) throws UsersException {
+        List<String> exceptionMessages = new ArrayList<String>();
+
+        UsersValidations.regexEmail(exceptionMessages, usersLoginDTO.getEmail());
+        UsersValidations.regexPassword(exceptionMessages, usersLoginDTO.getPassword());
 
         if(!exceptionMessages.isEmpty())
             throw new UserInvalidFields(exceptionMessages, "When filling out the form, the user entered some invalid data, all of which are listed above.", HttpStatus.SC_CONFLICT);
