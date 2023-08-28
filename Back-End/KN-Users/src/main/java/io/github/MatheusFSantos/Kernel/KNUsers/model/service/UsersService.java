@@ -6,13 +6,16 @@ import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.InternalUseOnly;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.ReadOnly;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersBackupDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersDTO;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersLoginDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.Users;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.enumeration.Roles;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.UsersException;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.specific.UserAlreadyExists;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.specific.UserLoginNotValid;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.specific.UsersNotFound;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.repository.UsersRepository;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.util.converter.NicknameConverter;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.util.cryptography.algorithms.Base64;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.util.validation.UUIDValidation;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.util.validation.UsersValidations;
 import org.apache.http.HttpStatus;
@@ -56,10 +59,37 @@ public class UsersService {
         if(this.usersRepository.findByNickname(usersDTO.getNickname()).isPresent() || this.usersRepository.findByEmail(usersDTO.getEmail()).isPresent())
             throw new UserAlreadyExists("User already exists!", "The method was invoked to save one user (save method), however this user already exists.", HttpStatus.SC_CONFLICT);
 
-        Users user = new Users(UUID.randomUUID().toString(), usersDTO.getName(), usersDTO.getNickname(), usersDTO.getEmail(), usersDTO.getPassword(), usersDTO.getLocation(), usersDTO.getBiography(), Roles.BASIC);
+        Users user = new Users(UUID.randomUUID().toString(), usersDTO.getName(), usersDTO.getNickname(), Base64.encoder(usersDTO.getEmail()), Base64.encoder(usersDTO.getPassword()), usersDTO.getLocation(), usersDTO.getBiography(), Roles.BASIC);
 
         this.usersBackupService.save(new UsersBackupDTO(user));
         this.usersRepository.save(user);
+    }
+
+    public boolean isValidUser(UsersLoginDTO usersLoginDTO) throws UsersException {
+
+        UsersValidations.loginValidation(usersLoginDTO);
+
+        List<Users> usersList = this.findAll();
+        boolean response = false;
+
+        String emailDecoded = "";
+        String passwordDecoded = "";
+
+        for (Users user : usersList) {
+            emailDecoded = Base64.decode(user.getEmail());
+            passwordDecoded = Base64.decode(user.getPassword());
+
+            if (emailDecoded.equals(usersLoginDTO.getEmail()) && passwordDecoded.equals(usersLoginDTO.getPassword())) {
+                response = true;
+                break;
+            }
+        }
+
+        if(!response) {
+            throw new UserLoginNotValid("Users login is not valid!", "The method was invoked to valid one user (isValidUser method), however the user login is invalid", HttpStatus.SC_BAD_REQUEST);
+        }
+
+        return response;
     }
 
     @Authorize(required=true)
