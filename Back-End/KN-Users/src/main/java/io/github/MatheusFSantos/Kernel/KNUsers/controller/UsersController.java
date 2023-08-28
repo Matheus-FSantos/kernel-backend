@@ -2,6 +2,7 @@ package io.github.MatheusFSantos.Kernel.KNUsers.controller;
 
 import io.github.MatheusFSantos.Kernel.KNUsers.model.annotation.controller.UserController;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersDTO;
+import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.DTO.UsersLoginDTO;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.entity.Users;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.exception.UsersException;
 import io.github.MatheusFSantos.Kernel.KNUsers.model.service.UsersService;
@@ -32,6 +33,11 @@ public class UsersController {
     public ResponseEntity<Void> save(@RequestBody UsersDTO usersDTO) throws UsersException {
         this.usersService.save(usersDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/isValid")
+    public ResponseEntity<Boolean> isValidUser(@RequestBody UsersLoginDTO usersLoginDTO) throws UsersException {
+        return ResponseEntity.ok().body(this.usersService.isValidUser(usersLoginDTO));
     }
 
     @PutMapping("/{id}")
