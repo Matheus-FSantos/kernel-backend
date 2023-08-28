@@ -11,8 +11,8 @@ import static java.util.Base64.*;
 public class Base64 {
 
     @Cryptography(encodeMethod=true)
-    public static String encoder(String JSON) {
-        return new String(getEncoder().encode(JSON.getBytes()));
+    public static String encoder(String decryptedString) {
+        return new String(getEncoder().encode(decryptedString.getBytes()));
     }
 
     @Cryptography(decodeMethod=true)
